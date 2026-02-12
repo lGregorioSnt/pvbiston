@@ -9,132 +9,148 @@
 <body>
 
     <div class="exam-layout">
-        
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Navegação</h2>
-                <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">
-                    Prova de Conhecimentos Gerais
-                </p>
+                <p class="sidebar-subtitle">Prova de Conhecimentos Gerais</p>
             </div>
-
-            <div class="question-grid" id="questionGrid">
-                </div>
+            <div class="question-grid" id="questionGrid"></div>
         </aside>
 
         <main class="main-content">
-            
             <header class="exam-header">
                 <div>
-                    <h1 style="font-size: 1.25rem; font-weight: 600;">Engenharia de Software - Prova A</h1>
-                    <span style="font-size: 0.875rem; opacity: 0.9;">Candidato: Lucas</span>
+                    <h1 class="exam-title">Simulado SAEP 2026</h1>
+                    <span id="display-nome" class="candidate-name">Candidato: Lucas</span>
                 </div>
-                
                 <div class="timer" id="exam-timer">04:00:00</div>
             </header>
 
             <div class="question-card">
-                <div class="question-header" style="margin-bottom: 1.5rem; color: var(--text-light); font-size: 0.875rem;">
-                    QUESTÃO <span id="current-q-num">3</span> DE 40
+                <div class="question-meta">
+                    QUESTÃO <span id="current-q-num">1</span> DE <span id="total-q-num">31</span>
                 </div>
                 
-                <h3 class="question-text">
-                    No contexto de folhas de estilo em cascata (CSS), qual propriedade é utilizada para alterar a cor de fundo de um elemento HTML, garantindo que o texto permaneça legível sobre ela?
-                </h3>
+                <h3 class="question-text" id="question-text">Carregando questão...</h3>
 
-                <div class="options-list">
-                    <label class="option-item">
-                        <input type="radio" name="q3" class="option-radio">
-                        <span>color</span>
-                    </label>
-                    
-                    <label class="option-item">
-                        <input type="radio" name="q3" class="option-radio">
-                        <span>background-color</span>
-                    </label>
-                    
-                    <label class="option-item">
-                        <input type="radio" name="q3" class="option-radio">
-                        <span>border-color</span>
-                    </label>
-                    
-                    <label class="option-item">
-                        <input type="radio" name="q3" class="option-radio">
-                        <span>text-decoration</span>
-                    </label>
+                <div id="image-container" class="q-image-container" style="display: none;">
+                    <img id="question-image" src="" alt="Anexo">
                 </div>
+
+                <div class="options-list" id="options-container"></div>
             </div>
 
             <footer class="exam-footer">
-                <button class="btn btn-outline">Anterior</button>
-                <button class="btn btn-primary">Próxima Questão</button>
+                <button class="btn btn-outline" id="prevBtn">Anterior</button>
+                <div class="footer-right">
+                    <button class="btn btn-danger" id="finishBtn" onclick="openModal()">Finalizar Prova</button>
+                    <button class="btn btn-primary" id="nextBtn">Próxima Questão</button>
+                </div>
             </footer>
         </main>
     </div>
 
+    <div class="modal-overlay" id="finishModal">
+        <div class="modal-box">
+            <div class="modal-icon">⚠️</div>
+            <h2 class="modal-title">Finalizar Simulado?</h2>
+            <p class="modal-text">Você revisou todas as respostas? Após finalizar, você não poderá mais alterar suas escolhas.</p>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-cancel" onclick="closeModal()">Revisar Questões</button>
+                <button class="btn-modal btn-confirm" onclick="confirmFinish()">Sim, Finalizar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 1. Função do Timer
-        function startTimer(duration, display) {
-            var timer = duration, hours, minutes, seconds;
-            setInterval(function () {
-                hours = parseInt(timer / 3600, 10);
-                minutes = parseInt((timer % 3600) / 60, 10);
-                seconds = parseInt(timer % 60, 10);
+         const questoes = [
+            { titulo: "Para validar parte por parte do sistema que está sendo codificado, um técnico em desenvolvimento de sistemas planejou realizar um teste que ele mesmo executaria. Ainda, nesse planejamento, ele também definiu que ficaria responsável por corrigir as falhas que viessem a ser indicadas pelo teste. Conforme essas informações, qual é o teste de software capaz de atender o proposto no planejamento desse técnico?", alternativas: ["Carga.", "Unitário.", "Requisito.", "Regressão.", "Usabilidade."], certa: "B", anexo: "" },
+            { titulo: "Um aluno do curso superior de Análise e Desenvolvimento de Sistemas precisa redigir uma monografia baseada na norma ABNT. Esta monografia deverá conter a documentação do protótipo a ser apresentado no final do curso para um docente orientador. Qual software para escritório o aluno deve utilizar?", alternativas: ["Outlook.", "Editor de vídeo.", "Editor de textos.", "Planilha eletrônica.", "Apresentações digitais."], certa: "C", anexo: "" },
+            { titulo: "Um programador está trabalhando na implantação de um sistema web e precisa documentar todo o processo. Para isso, ele precisa utilizar aplicações e sistemas operacionais que facilitem esse processo. O programador deve utilizar aplicações e sistemas operacionais com a finalidade de", alternativas: ["facilitar a organização e os documentos do processo de desenvolvimento do sistema web.", "facilitar a implementação de novas funcionalidades no sistema.", "reduzir o tempo de desenvolvimento do sistema web.", "estimular o desempenho do sistema web.", "garantir a segurança do sistema web."], certa: "A", anexo: "" },
+            { titulo: "Uma empresa está desenvolvendo uma solução de automação residencial que utiliza dispositivos IoT para monitorar e controlar vários aspectos da casa, como iluminação, temperatura e segurança. Para garantir a interoperabilidade dos dispositivos e a eficiência da comunicação entre eles, é importante selecionar os recursos e a linguagem de programação adequados. Com base na solução a ser desenvolvida, o recurso adequado a ser utilizado é:", alternativas: ["Disponibilidade de recursos de rede.", "Interface de usuário dos dispositivos.", "Popularidade da linguagem de programação.", "Capacidade de processamento dos dispositivos.", "Compatibilidade de protocolos e formatos de dados."], certa: "E", anexo: "" },
+            { titulo: "Um gerente de projetos em uma empresa de desenvolvimento de software está trabalhando com a implantação de um sistema de gestão de recursos humanos para uma organização de grande porte. Durante o processo de implantação, é necessário criar uma regra de negócio específica relacionada ao cálculo de bônus dos funcionários. A referida regra deve ser:", alternativas: ["Realizada no início do projeto e integrada ao cronograma, permitindo ajustes durante as etapas do projeto, se necessário.", "Delegada à equipe de desenvolvimento para tratamento independente do cronograma de implantação.", "Tratada ao longo do processo de implantação, quando for possível calcular o bônus do funcionário.", "Tratada como uma etapa independente no cronograma de implantação.", "Realizada apenas após a conclusão do cronograma de implantação."], certa: "A", anexo: "" },
+            { titulo: "Um programador está desenvolvendo um sistema para sua empresa que envolve a coleta de dados de sensores em um ambiente industrial. Para tal, ele precisa entender os fundamentos de eletrônica aplicada para desenvolver o sistema com tecnologia IoT utilizando um componente para amplificar um sinal analógico em circuito eletrônico. Qual componente eletrônico deve ser utilizado?", alternativas: ["Transistor.", "Capacitor.", "Resistor.", "Diodo.", "Led."], certa: "A", anexo: "" },
+            { titulo: "Um analista de sistemas precisa estruturar um sistema de vendas online, avaliando os requisitos e as regras de negócios. No processo de elaboração desse sistema, o analista deve decidir se o requisito: 'O sistema deve permitir aos usuários salvar itens em uma lista de desejos para compra posterior' será adicionado ou não na modelagem do sistema. Na emissão do documento de levantamento de requisitos, esse analista de sistemas deve:", alternativas: ["Excluir o requisito da modelagem do sistema, pois é uma funcionalidade acessória e pode complicar a interface do usuário.", "Incluir o requisito na modelagem do sistema, pois é uma funcionalidade importante para os usuários e pode aumentar as vendas.", "Adiar a decisão sobre o requisito até que seja feito mais pesquisas sobre o comportamento dos usuários e as tendências do mercado.", "Modificar o requisito para permitir que os usuários compartilhem suas listas de desejos com amigos, para aumentar o engajamento deles.", "Incluir o requisito na modelagem do sistema, mas limitar a quantidade de itens que os usuários podem adicionar à lista de desejos para evitar sobrecarregar o sistema."], certa: "B", anexo: "" },
+            { titulo: "Uma equipe está usando o conceito de orientação a objeto para desenvolver um software. Eles precisam definir que a visibilidade de um atributo da classe PESSOA seja acessado apenas por métodos dessa classe ou qualquer método definido em subclasses de PESSOA. Com base nessas informações, qual visibilidade foi usada por essa equipe?", alternativas: ["Pública (public).", "Estática (static).", "Privada (private).", "Pacote (package).", "Protegida (protected)."], certa: "E", anexo: "" },
+            { titulo: "Um estudante realizou a montagem de um circuito no microcontrolador Arduino Uno para acender um led na cor verde. Na programação, utilizou a linguagem C++ para definir que, ao iniciar o led, acenda por dois segundos e, em seguida, fique desligado por 5 segundos. Os comandos ausentes no código fonte são, respectivamente:", alternativas: ["INPUT, LOW, 2000, HIGH e 5000.", "INPUT, HIGH, 2000, LOW e 5000.", "OUTPUT, LOW, 2000, HIGH e 5000.", "OUTPUT, HIGH, 2000, LOW e 5000.", "OUTPUT, HIGH, 5000, LOW e 2000."], certa: "C", anexo: "" },
+            { titulo: "Uma equipe de desenvolvimento de sistemas concluiu uma versão preliminar de software e o líder orientou que os desenvolvedores apliquem a técnica de refatoração de software. A técnica recomendada pelo líder permite que o código produzido pela equipe:", alternativas: ["Seja testado para garantir que ele não contenha erros.", "Seja reescrito usando um conjunto específico de regras.", "Seja convertido de uma linguagem de programação para outra.", "Combina diferentes partes do código do programa em uma única seção.", "Tenha sua estrutura interna melhorada sem alterar sua funcionalidade externa."], certa: "E", anexo: "" },
+            { titulo: "Um programador contratado está implantando um novo sistema que utiliza uma base de dados existente. Ele verificou que alguns dados estão inconsistentes e com duplicidade. Visando a implantação, qual técnica é mais indicada dada a situação encontrada?", alternativas: ["Backup dos dados.", "Criptografia dos dados.", "Análise de desempenho.", "Normalização do banco de dados.", "Atualização do sistema operacional."], certa: "D", anexo: "" },
+            { titulo: "Um aluno criou um projeto que contém uma rede de objetos físicos interconectados que são equipados com sensores e softwares, capazes de transmitir dados por meio da internet sem intervenção humana direta. O projeto criado pelo aluno engloba recursos de:", alternativas: ["rede 5G.", "rede neural.", "hiperconvergência.", "cloud computing (computação em nuvem).", "IoT (Internet of Things, em português, Internet das Coisas)."], certa: "E", anexo: "" },
+            { titulo: "Uma equipe de desenvolvedores enfrentou dificuldades em relação aos requisitos funcionais de um sistema de gerenciamento de estoque. A equipe enfrentou dificuldades porque o requisito funcional do sistema deve:", alternativas: ["responder às requisições em menos de 1 segundo.", "estar disponível 24 horas por dia, com disponibilidade de 99,9% do tempo.", "estar pronto para a integração de outros módulos de forma fácil, simples e funcional.", "enviar um alerta para o setor de compras quando o estoque de um produto estiver abaixo de uma quantidade configurável.", "operar os seus serviços na nuvem de forma offline."], certa: "D", anexo: "" },
+            { titulo: "Estrutura de dados do tipo pilha (LIFO). Considere a sequência: 1. push(3); 2. push(9); 3. pop(); 4. push(5); 5. push(8); 6. pop(); 7. pop(); 8. push(1); 9. pop(). Ao efetuar essa sequência em uma pilha vazia, qual o elemento que estará no topo da estrutura ao final?", alternativas: ["1", "3", "5", "8", "9"], certa: "B", anexo: "" },
+            { titulo: "Um técnico em desenvolvimento de sistemas criou um teste de mesa para validar as saídas da variável 'n'. Ao depurar esse código, qual é a sequência esperada pelo desenvolvedor para a variável 'n'?", alternativas: ["0, 1, 2, 3, 4, 5", "0, 1, 1, 2, 3, 5", "0, 0, 0, 1, 1, 2", "0, 1, 1, 1, 2, 3", "1, 2, 3, 4, 5, 6"], certa: "B", anexo: "" },
+            { titulo: "SQL: Retornar todos os clientes com idade maior ou igual a 18 anos e que morem na cidade de São Paulo. Tabela 'clientes' com campos 'id', 'nome', 'idade' e 'cidade'. O comando correto é:", alternativas: ["SELECT * FROM clientes WHERE idade > 18 AND cidade = 'São Paulo';", "SELECT * FROM clientes WHERE idade >= 18 OR cidade = 'São Paulo';", "SELECT * FROM clientes WHERE idade >= 18 AND cidade = 'São Paulo';", "SELECT * FROM clientes WHERE idade > 18 OR cidade LIKE '%São Paulo%';", "SELECT * FROM clientes WHERE idade >= 18 AND cidade LIKE '%São Paulo%';"], certa: "C", anexo: "" },
+            { titulo: "Um técnico precisa enviar um texto de boas-vindas para 200 clientes. Qual recurso deve ser utilizado para automatizar esse processo em um editor de textos?", alternativas: ["controle de alterações.", "criação de mala direta.", "formatação de parágrafos.", "formatação de capitulação.", "criação de referência cruzada."], certa: "B", anexo: "" },
+            { titulo: "Um programador necessita atualizar o nome da tabela saep_antigo para saep_novo no MySQL Workbench. O script SQL executado foi:", alternativas: ["alter table saep_antigo rename to saep_novo;", "alter table saep_antigo rename to 'saep_novo';", "update table saep_antigo rename to saep_novo;", "update table saep_antigo set nome = saep_novo;", "update table saep_antigo set nome = 'saep_novo';"], certa: "A", anexo: "" },
+            { titulo: "Uma empresa desenvolvedora de soluções IoT está criando um novo projeto para monitoramento de estoques em tempo real. A tecnologia usada para a integração IoT do novo projeto é:", alternativas: ["CSS.", "HTML.", "Python.", "Portugol.", "Assembler."], certa: "C", anexo: "" },
+            { titulo: "Protocolo MQTT: O comando que publica o dado 'temperatura' no broker para o setor administrativo (Adm) que está com falha é:", alternativas: ["PUBLISH Temp=21°C em Adm", "PUBLISH Temp=21°C em Rh", "UNSUBSCRIBE tópico Adm", "SUBSCRIBE tópico Adm", "SUBSCRIBE tópico Rh"], certa: "A", anexo: "" },
+            { titulo: "Um desenvolvedor de software escolheu uma linguagem de programação com recursos adequados para implementar um sistema IoT, conectividade de hardware, robótica e microcontroladores. Ele escolheu uma linguagem:", alternativas: ["de baixo nível para melhor controle.", "voltada para desenvolvimento web.", "baseada em blocos gráficos.", "específica para processamento de texto.", "de alto nível com suporte a bibliotecas específicas para IoT e microcontroladores."], certa: "E", anexo: "" },
+            { titulo: "A primeira etapa para realizar a tarefa de planejamento de um banco de dados otimizado é fazer:", alternativas: ["um projeto físico.", "um projeto lógico.", "análise de requisitos.", "um projeto conceitual.", "modelo de entidade-relacionamento."], certa: "C", anexo: "" },
+            { titulo: "Algoritmo para receber dados de 4 pessoas (nome, cidade, email). Para exibir todo o conjunto de informações, o vetor deve ser declarado como:", alternativas: ["pessoas: vetor[12] de caracter.", "pessoas: vetor[3][3] de caracter.", "pessoas: vetor[3][4] de caracter.", "pessoas: vetor[4][3] de caracter.", "pessoas: vetor[1][12] de caracter."], certa: "D", anexo: "" },
+            { titulo: "Considere: public abstract class CL { public abstract void metodoME(); }. Para que uma chamada ao metodoME seja realizada, ele deve:", alternativas: ["receber parâmetro.", "ter visibilidade pública.", "ser implementado em uma subclasse CL.", "ser uma função avulsa.", "ser chamado diretamente sem instância."], certa: "C", anexo: "" },
+            { titulo: "No diagrama UML, para representar um objeto, a empresa deve utilizar um:", alternativas: ["triângulo.", "retângulo.", "paralelogramo.", "losango sem preenchimento.", "losango com preenchimento preto."], certa: "B", anexo: "" },
+            { titulo: "O recurso necessário para um sistema de automação residencial IoT funcionar via rede é:", alternativas: ["um módulo para jogar jogos.", "um programa que exibe gráficos 3D.", "um conjunto de funções para enviar e receber dados através da rede.", "um algoritmo para encontrar o menor caminho.", "uma função para tocar música."], certa: "C", anexo: "" },
+            { titulo: "Para criar uma lista de pedidos a serem produzidos pela ordem em que foram criados (Fila), as ações corretas são:", alternativas: ["criar uma fila contendo os atributos.", "criar uma fila apenas com as datas.", "criar uma pilha contendo os atributos.", "empilhar os objetos de pedidos.", "criar uma classe/registro e enfileirar os objetos em uma estrutura de dados do tipo fila."], certa: "E", anexo: "" },
+            { titulo: "Para garantir que o sistema atenda aos requisitos de desempenho e carga especificados, o tipo de teste adequado é de:", alternativas: ["unidade.", "estresse.", "regressão.", "aceitação.", "integração."], certa: "B", anexo: "" },
+            { titulo: "Um hospital precisa integrar dois sistemas para trocar informações. Essa integração foi realizada por meio de:", alternativas: ["utilização de APIs e microserviços.", "configuração de ambiente de trabalho.", "modelagem UML.", "modelagem conceitual de banco de dados.", "criação de interfaces gráficas."], certa: "A", anexo: "" },
+            { titulo: "Qual o valor impresso pela linha escreval(a) e escreval(b) no pseudocódigo fornecido?", alternativas: ["1 e 0", "4 e 10", "9 e 10", "10 e 12", "12 e 10"], certa: "C", anexo: "" },
+            { titulo: "A grandeza utilizada na montagem de um protótipo IoT para medir a temperatura e a umidade relativa do ar é:", alternativas: ["Corrente elétrica.", "Comprimento.", "Temperatura.", "Velocidade.", "Massa."], certa: "C", anexo: "" }
+        ];
 
-                hours = hours < 10 ? "0" + hours : hours;
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                display.textContent = hours + ":" + minutes + ":" + seconds;
+        let currentIndex = 0;
+        let userAnswers = new Array(questoes.length).fill(null);
 
-                if (--timer < 0) {
-                    timer = 0;
-                    alert("Tempo esgotado!");
-                }
-            }, 1000);
+        function renderQuestion() {
+            const q = questoes[currentIndex];
+            const isLast = currentIndex === questoes.length - 1;
+
+            document.getElementById('current-q-num').textContent = currentIndex + 1;
+            document.getElementById('total-q-num').textContent = questoes.length;
+            document.getElementById('question-text').textContent = q.titulo;
+
+            // Lógica de visibilidade do Botão Finalizar
+            document.getElementById('finishBtn').style.display = isLast ? 'block' : 'none';
+            document.getElementById('nextBtn').style.display = isLast ? 'none' : 'block';
+            document.getElementById('prevBtn').style.visibility = currentIndex === 0 ? 'hidden' : 'visible';
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            ['A', 'B', 'C', 'D', 'E'].forEach((label, i) => {
+                const item = document.createElement('label');
+                item.className = 'option-item';
+                const checked = userAnswers[currentIndex] === label ? 'checked' : '';
+                item.innerHTML = `<input type="radio" name="q" class="option-radio" value="${label}" ${checked}>
+                                  <span><strong>${label})</strong> ${q.alternativas[i]}</span>`;
+                item.onchange = () => { userAnswers[currentIndex] = label; renderGrid(); };
+                container.appendChild(item);
+            });
+            renderGrid();
         }
 
-        // 2. Função para Gerar as 40 Bolinhas
-        function renderQuestionGrid() {
+        function renderGrid() {
             const grid = document.getElementById('questionGrid');
-            const totalQuestions = 40;
-            const currentQuestionSpan = document.getElementById('current-q-num');
-
-            for (let i = 1; i <= totalQuestions; i++) {
+            grid.innerHTML = '';
+            questoes.forEach((_, i) => {
                 const dot = document.createElement('div');
-                dot.className = 'question-dot';
-                dot.textContent = i;
-
-                // Simulação de estado inicial (1 e 2 respondidas, 3 ativa)
-                if (i === 1 || i === 2) {
-                    dot.classList.add('answered');
-                } else if (i === 3) {
-                    dot.classList.add('active');
-                }
-
-                // Evento de clique para mudar a questão ativa
-                dot.addEventListener('click', function() {
-                    // Remove 'active' de todas
-                    document.querySelectorAll('.question-dot').forEach(d => d.classList.remove('active'));
-                    // Adiciona 'active' na clicada
-                    this.classList.add('active');
-                    // Atualiza o texto "Questão X de 40"
-                    currentQuestionSpan.textContent = i;
-                });
-
+                dot.className = `question-dot ${i === currentIndex ? 'active' : ''} ${userAnswers[i] ? 'answered' : ''}`;
+                dot.textContent = i + 1;
+                dot.onclick = () => { currentIndex = i; renderQuestion(); };
                 grid.appendChild(dot);
-            }
+            });
         }
 
-        // Inicialização
-        window.onload = function () {
-            // Inicia Timer (4 horas)
-            var fourHours = 60 * 60 * 4;
-            var display = document.querySelector('#exam-timer');
-            startTimer(fourHours, display);
+        function openModal() { document.getElementById('finishModal').classList.add('active'); }
+        function closeModal() { document.getElementById('finishModal').classList.remove('active'); }
+        function confirmFinish() { window.location.href = "../index.html"; }
 
-            // Renderiza as questões
-            renderQuestionGrid();
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('nome')) document.getElementById('display-nome').textContent = "Candidato: " + params.get('nome');
+            renderQuestion();
+            document.getElementById('nextBtn').onclick = () => { currentIndex++; renderQuestion(); };
+            document.getElementById('prevBtn').onclick = () => { currentIndex--; renderQuestion(); };
         };
     </script>
 </body>

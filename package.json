@@ -12,6 +12,7 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "jest-image-snapshot": "^6.5.1",
     "lite-server": "^2.6.1"
   }
 }
