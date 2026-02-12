@@ -1,0 +1,4 @@
+exclude:
+  - node_modules
+  - testes-selenium-js
+  - vendor
