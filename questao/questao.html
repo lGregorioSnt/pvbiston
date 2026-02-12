@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Provas - Modo Exame</title>
+    <link rel="stylesheet" href="questao.css">
+</head>
+<body>
+
+    <div class="exam-layout">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">Navegação</h2>
+                <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">
+                    Prova de Conhecimentos Gerais
+                </p>
+            </div>
+
+            <div class="question-grid" id="questionGrid">
+                </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="exam-header">
+                <div>
+                    <h1 style="font-size: 1.25rem; font-weight: 600;">Engenharia de Software - Prova A</h1>
+                    <span style="font-size: 0.875rem; opacity: 0.9;">Candidato: Lucas</span>
+                </div>
+                
+                <div class="timer" id="exam-timer">04:00:00</div>
+            </header>
+
+            <div class="question-card">
+                <div class="question-header" style="margin-bottom: 1.5rem; color: var(--text-light); font-size: 0.875rem;">
+                    QUESTÃO <span id="current-q-num">3</span> DE 40
+                </div>
+                
+                <h3 class="question-text">
+                    No contexto de folhas de estilo em cascata (CSS), qual propriedade é utilizada para alterar a cor de fundo de um elemento HTML, garantindo que o texto permaneça legível sobre ela?
+                </h3>
+
+                <div class="options-list">
+                    <label class="option-item">
+                        <input type="radio" name="q3" class="option-radio">
+                        <span>color</span>
+                    </label>
+                    
+                    <label class="option-item">
+                        <input type="radio" name="q3" class="option-radio">
+                        <span>background-color</span>
+                    </label>
+                    
+                    <label class="option-item">
+                        <input type="radio" name="q3" class="option-radio">
+                        <span>border-color</span>
+                    </label>
+                    
+                    <label class="option-item">
+                        <input type="radio" name="q3" class="option-radio">
+                        <span>text-decoration</span>
+                    </label>
+                </div>
+            </div>
+
+            <footer class="exam-footer">
+                <button class="btn btn-outline">Anterior</button>
+                <button class="btn btn-primary">Próxima Questão</button>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // 1. Função do Timer
+        function startTimer(duration, display) {
+            var timer = duration, hours, minutes, seconds;
+            setInterval(function () {
+                hours = parseInt(timer / 3600, 10);
+                minutes = parseInt((timer % 3600) / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = hours + ":" + minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = 0;
+                    alert("Tempo esgotado!");
+                }
+            }, 1000);
+        }
+
+        // 2. Função para Gerar as 40 Bolinhas
+        function renderQuestionGrid() {
+            const grid = document.getElementById('questionGrid');
+            const totalQuestions = 40;
+            const currentQuestionSpan = document.getElementById('current-q-num');
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'question-dot';
+                dot.textContent = i;
+
+                // Simulação de estado inicial (1 e 2 respondidas, 3 ativa)
+                if (i === 1 || i === 2) {
+                    dot.classList.add('answered');
+                } else if (i === 3) {
+                    dot.classList.add('active');
+                }
+
+                // Evento de clique para mudar a questão ativa
+                dot.addEventListener('click', function() {
+                    // Remove 'active' de todas
+                    document.querySelectorAll('.question-dot').forEach(d => d.classList.remove('active'));
+                    // Adiciona 'active' na clicada
+                    this.classList.add('active');
+                    // Atualiza o texto "Questão X de 40"
+                    currentQuestionSpan.textContent = i;
+                });
+
+                grid.appendChild(dot);
+            }
+        }
+
+        // Inicialização
+        window.onload = function () {
+            // Inicia Timer (4 horas)
+            var fourHours = 60 * 60 * 4;
+            var display = document.querySelector('#exam-timer');
+            startTimer(fourHours, display);
+
+            // Renderiza as questões
+            renderQuestionGrid();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso à Prova - Sistema de Avaliação</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="login-container">
+        <div class="login-card">
+            <div class="header">
+                <h1>Sistema de Avaliação</h1>
+                <p>Preencha os dados para iniciar</p>
+            </div>
+
+            <form action="./questao/questao.html" method="GET">
+                <div class="input-group">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" placeholder="Ex: Lucas" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="codigo">Código da Prova</label>
+                    <input type="text" id="codigo" name="codigo" placeholder="Ex: SAEP2025" required>
+                </div>
+
+                <button type="submit" class="btn-start">Iniciar Prova</button>
+            </form>
+            
+            <div class="footer-note">
+                <p>Certifique-se de ter uma conexão estável.</p>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
