@@ -1,6 +1,6 @@
 const { Builder, By, until } = require('selenium-webdriver');
 
-describe('Fluxo de Prova SAEP - Projeto PVBISTON', () => {
+describe('Suite de Testes - Projeto PVBISTON', () => {
     let driver;
 
     beforeAll(async () => {
@@ -18,42 +18,50 @@ describe('Fluxo de Prova SAEP - Projeto PVBISTON', () => {
         await driver.findElement(By.id('codigo')).sendKeys('SAEP2026');
         await driver.findElement(By.className('btn-start')).click();
 
-        // 2. Aguarda a página de questões carregar (URL e Grid de Bolinhas)
-        await driver.wait(until.urlContains('questao.html'), 5000);
-        const dots = await driver.wait(until.elementsLocated(By.className('question-dot')), 5000);
+        // 2. AGUARDAR REDIRECIONAMENTO: Espera o sistema carregar a prova de fato
+        const grid = await driver.wait(until.elementLocated(By.id('questionGrid')), 8000);
 
         // --- QUESTÃO 1 ---
-        // Espera as alternativas aparecerem e clica na primeira
+        // Espera as opções da Q1 ficarem prontas para clique
         let options = await driver.wait(until.elementsLocated(By.className('option-item')), 5000);
         await options[0].click(); 
 
-        // --- NAVEGAR PARA QUESTÃO 2 (VIA SIDEBAR) ---
-        // Clica na bolinha "2" para garantir a troca
-        await dots[1].click(); 
+        // CORREÇÃO DO ERRO: Espera o botão "Próxima" existir E estar visível
+        const nextBtn = await driver.wait(until.elementLocated(By.id('nextBtn')), 5000);
+        await driver.wait(until.elementIsVisible(nextBtn), 2000);
+        await nextBtn.click();
 
         // --- QUESTÃO 2 ---
-        // Aguarda as novas opções carregarem e clica na segunda
-        await driver.wait(until.stalenessOf(options[0]), 3000); // Garante que a Q1 saiu da tela
-        options = await driver.wait(until.elementsLocated(By.className('option-item')), 5000);
+        // Espera o número da questão mudar no cabeçalho para confirmar a transição
+        const currentNum = await driver.findElement(By.id('current-q-num'));
+        await driver.wait(until.elementTextIs(currentNum, "2"), 5000);
+
+        // Captura as opções da Questão 2 e assinala a "B"
+        options = await driver.findElements(By.className('option-item'));
         await options[1].click();
 
         // --- PULO PARA A ÚLTIMA (31) VIA SIDEBAR ---
-        // Como o array de dots vai de 0 a 30, o índice 30 é a questão 31
-        await dots[30].click();
+        const dots = await driver.findElements(By.className('question-dot'));
+        await dots[30].click(); // Índice 30 = Questão 31
+
+        // Confirma que o pulo aconteceu esperando o texto "31"
+        await driver.wait(until.elementTextIs(currentNum, "31"), 5000);
 
         // --- FINALIZAÇÃO ---
-        // Espera o botão finalizar aparecer (ele só surge na questão 31)
+        // Localiza o botão finalizar (que deve aparecer agora que estamos na 31)
         const finishBtn = await driver.wait(until.elementLocated(By.id('finishBtn')), 5000);
         await driver.wait(until.elementIsVisible(finishBtn), 2000);
         await finishBtn.click();
 
-        // Interação com o Modal Customizado "Bonito"
+        // Interação com o Modal "Bonito"
         const confirmBtn = await driver.wait(until.elementLocated(By.className('btn-confirm')), 5000);
         await confirmBtn.click();
 
-        // Validação: Voltamos ao Index?
+        // Validação Final: Verifica se o teste voltou para a tela de login
         await driver.wait(until.elementLocated(By.className('login-container')), 5000);
         const urlFinal = await driver.getCurrentUrl();
         expect(urlFinal).not.toContain('questao.html');
+        
+        console.log("Sucesso, Lucas! O simulado SAEP foi concluído e testado.");
     });
 });
